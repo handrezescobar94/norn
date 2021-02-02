@@ -4,6 +4,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+def index_page(request):
+    if request.user.is_authenticated:
+        return redirect('inicio')
+    else:
+        return redirect('login')
 
 @login_required(login_url='login')
 def inicio_page(request):
