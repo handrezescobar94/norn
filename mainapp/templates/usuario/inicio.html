@@ -1,0 +1,7 @@
+{% extends 'layouts/layout.html' %}
+
+{% block title %} Inicio {% endblock title %}
+
+{% block content %}
+<h1>Bienvenido {{ request.user.first_name }} {{ user.last_name }}</h1>
+{% endblock content %}

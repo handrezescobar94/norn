@@ -16,14 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from polls import views as polls_views
 
 urlpatterns = [
-    path('', polls_views.index, name='index_app'),
-    path('hola-mundo', polls_views.holaMundo, name='hola_mundo'),
-    path('polls/', include('polls.urls')),
-    path('pagina/', polls_views.pagina, name='pagina'),
-    path('contacto/', polls_views.contacto, name='contacto'),
-    path('contacto/<str:nombre>', polls_views.contacto, name='contacto'),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('', include('mainapp.urls')),
 ]
