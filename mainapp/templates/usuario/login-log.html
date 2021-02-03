@@ -1,0 +1,103 @@
+{% extends 'layouts/layout.html' %}
+{% load static %}
+
+{% block title %} Inicio {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Log de Autenticaciones</h1>
+<p class="mb-4">Historial de inicios de sesión</p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Filtros</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col">
+                <div class="form-group row">
+                    <label for="filter-date" class="col-sm-3 col-form-label">Fecha de Autenticación</label>
+                    <div class="col-sm-6">
+                        <input type="text" readonly class="form-control-plaintext" id="filter-date" name="filter_date" value="AAAA-MM-DD HH:SS">
+                    </div>
+                    <div class="col-sm-3 text-right">
+                        <button class="btn btn-primary" id="btn-filter">Buscar <i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="results"></div>
+{% endblock content %}
+{% block js %}
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script>
+$(document).ready(function() {
+    var daterangeSettings = {
+            "format": "YYYY-MM-DD HH:mm:ss",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "Desde",
+            "toLabel": "Hasta",
+            "customRangeLabel": "Personalizado",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Ma",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sá"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 0
+    };
+    $('#filter-date').daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        timePickerSeconds: true,
+        /*startDate: moment().toDate(),
+        endDate: moment().toDate(),*/
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-default',
+        cancelClass: 'btn-white',
+        locale: daterangeSettings
+    });
+
+    $('#btn-filter').click(function() {
+        var data = {
+            'filter_date': $('#filter-date').val()
+        }
+        $.get("{% url 'filter_login_logs' %}", data).done(function(res) {
+            console.log('res:', res);
+            $('#results').html(res);
+        }).fail(function(err) {
+            alert('Ups! Ocurrio un problema, contacte al administrador de sistemas.');
+        })
+    });
+});
+</script>
+{% endblock js %}
