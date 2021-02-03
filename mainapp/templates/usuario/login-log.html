@@ -79,8 +79,6 @@ $(document).ready(function() {
         timePicker: true,
         timePicker24Hour: true,
         timePickerSeconds: true,
-        /*startDate: moment().toDate(),
-        endDate: moment().toDate(),*/
         buttonClasses: ['btn', 'btn-sm'],
         applyClass: 'btn-default',
         cancelClass: 'btn-white',
@@ -92,7 +90,6 @@ $(document).ready(function() {
             'filter_date': $('#filter-date').val()
         }
         $.get("{% url 'filter_login_logs' %}", data).done(function(res) {
-            console.log('res:', res);
             $('#results').html(res);
         }).fail(function(err) {
             alert('Ups! Ocurrio un problema, contacte al administrador de sistemas.');

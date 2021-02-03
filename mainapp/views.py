@@ -16,6 +16,12 @@ def index_page(request):
     else:
         return redirect('login')
 
+def recuperar_contrasena(request):
+    if request.user.is_authenticated:
+        return redirect('inicio')
+    else:
+        return render(request, 'auth/recuperar-password.html')
+
 @login_required(login_url='login')
 def inicio_page(request):
     return render(request, 'usuario/inicio.html')
